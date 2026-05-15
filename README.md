@@ -25,6 +25,12 @@ view_3d(model)
 
 三步：**配置密钥** → **生成模型** → **交互查看**。
 
+### 例子
+
++ [噬菌体图片](https://yulab-smu.top/tripo3d/phage.png)
++ [噬菌体3D模型](https://yulab-smu.top/tripo3d/)
+
+
 ## 核心函数
 
 | 函数 | 说明 |
