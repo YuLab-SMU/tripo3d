@@ -111,16 +111,23 @@ tripo_upload_image <- function(image) {
   filename <- basename(path)
   boundary <- paste0("----", paste(sample(c(letters, 0:9), 24, TRUE), collapse = ""))
 
-  body_parts <- c(
-    charToRaw(paste0("--", boundary, "\r\n")),
-    charToRaw(paste0(
-      "Content-Disposition: form-data; name=\"file\"; filename=\"", filename, "\"\r\n"
-    )),
-    charToRaw(paste0("Content-Type: image/", ext, "\r\n\r\n")),
-    raw_file,
-    charToRaw(paste0("\r\n--", boundary, "--\r\n"))
-  )
-  body_raw <- Reduce(c, body_parts)
+  header1 <- charToRaw(paste0("--", boundary, "\r\n"))
+  header2 <- charToRaw(paste0(
+    "Content-Disposition: form-data; name=\"file\"; filename=\"", filename, "\"\r\n"
+  ))
+  header3 <- charToRaw(paste0("Content-Type: image/", ext, "\r\n\r\n"))
+  footer <- charToRaw(paste0("\r\n--", boundary, "--\r\n"))
+
+  con <- rawConnection(raw(0), "wb")
+  writeBin(header1, con)
+  writeBin(header2, con)
+  writeBin(header3, con)
+  writeBin(raw_file, con)
+  writeBin(footer, con)
+  body_raw <- rawConnectionValue(con)
+  close(con)
+
+  upload_timeout <- max(get_tripo_option("timeout", 300), 120)
 
   req <- httr2::request(url) |>
     httr2::req_user_agent("tripo3d (R package)") |>
@@ -129,12 +136,9 @@ tripo_upload_image <- function(image) {
       `Content-Type` = paste0("multipart/form-data; boundary=", boundary)
     ) |>
     httr2::req_body_raw(body_raw) |>
-    httr2::req_timeout(get_tripo_option("timeout", 300))
+    httr2::req_timeout(upload_timeout)
 
-  proxy <- get_tripo_option("proxy")
-  if (!is.na(proxy) && nzchar(proxy)) {
-    req$options$proxy <- proxy
-  }
+  apply_proxy()
 
   resp <- httr2::req_perform(req)
   parsed <- httr2::resp_body_json(resp)
@@ -156,4 +160,11 @@ tripo_upload_image <- function(image) {
   }
 
   list(type = ext, file_token = token)
+}
+
+apply_proxy <- function() {
+  proxy <- get_tripo_option("proxy")
+  if (!is.na(proxy) && nzchar(proxy)) {
+    Sys.setenv(https_proxy = proxy, http_proxy = proxy)
+  }
 }

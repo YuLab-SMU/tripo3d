@@ -44,10 +44,7 @@ tripo_request <- function(endpoint,
     req <- httr2::req_url_query(req, !!!query)
   }
 
-  proxy <- get_tripo_option("proxy")
-  if (!is.na(proxy) && nzchar(proxy)) {
-    req$options$proxy <- proxy
-  }
+  apply_proxy()
 
   resp <- tryCatch(
     httr2::req_perform(req),
