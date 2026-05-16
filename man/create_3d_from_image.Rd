@@ -31,7 +31,7 @@ Default \code{"v2.5-20250123"}.}
 \item{model_seed}{Random seed for reproducibility. Default \code{NULL}.}
 }
 \value{
-A \code{tripo_task} object.
+A \code{cast3d_task} object.
 }
 \description{
 Submit an image to Tripo's image-to-3D pipeline and return a task object

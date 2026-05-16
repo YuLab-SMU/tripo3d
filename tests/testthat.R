@@ -1,4 +1,4 @@
 library(testthat)
-library(tripo3d)
+library(cast3d)
 
-test_check("tripo3d")
+test_check("cast3d")

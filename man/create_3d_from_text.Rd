@@ -31,7 +31,7 @@ create_3d_from_text(
 \item{model_seed}{Random seed for reproducibility. Default \code{NULL}.}
 }
 \value{
-A \code{tripo_task} object.
+A \code{cast3d_task} object.
 }
 \description{
 Submit a text description to Tripo's text-to-3D pipeline and return

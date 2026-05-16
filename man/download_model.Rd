@@ -7,7 +7,7 @@
 download_model(task, output_dir = NULL, overwrite = FALSE, filename = NULL)
 }
 \arguments{
-\item{task}{A \code{tripo_task} with status \code{"succeeded"}.}
+\item{task}{A \code{cast3d_task} with status \code{"succeeded"}.}
 
 \item{output_dir}{Directory to save the \code{.glb} file. Default uses the
 package cache directory.}
@@ -17,7 +17,7 @@ package cache directory.}
 \item{filename}{Output filename. Default auto-generated from task ID.}
 }
 \value{
-A \code{tripo_model} object.
+A \code{cast3d_model} object.
 }
 \description{
 Download a 3D model from a completed Tripo task

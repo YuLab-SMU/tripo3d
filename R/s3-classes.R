@@ -1,7 +1,7 @@
 #' An asynchronous Tripo 3D generation task
 #'
 #' @description
-#' A `tripo_task` represents a 3D generation job submitted to the Tripo API.
+#' A `cast3d_task` represents a 3D generation job submitted to the Tripo API.
 #' It tracks the task ID, status, and—once complete—the URL of the generated
 #' model.
 #'
@@ -15,8 +15,8 @@
 #' @param raw list. The raw API response for debugging.
 #'
 #' @export
-#' @name tripo_task
-new_tripo_task <- function(task_id = character(),
+#' @name cast3d_task
+new_cast3d_task <- function(task_id = character(),
                            status = "pending",
                            created_at = Sys.time(),
                            model_url = character(),
@@ -31,12 +31,12 @@ new_tripo_task <- function(task_id = character(),
       error_message = error_message,
       raw = raw
     ),
-    class = "tripo_task"
+    class = "cast3d_task"
   )
 }
 
 #' @export
-print.tripo_task <- function(x, ...) {
+print.cast3d_task <- function(x, ...) {
   cli::cli_h1("Tripo 3D Task")
   created_display <- if (inherits(x$created_at, "POSIXt")) {
     format(x$created_at, "%Y-%m-%d %H:%M:%S")
@@ -64,7 +64,7 @@ print.tripo_task <- function(x, ...) {
 #' A downloaded Tripo 3D model
 #'
 #' @description
-#' A `tripo_model` represents a 3D model that has been downloaded from
+#' A `cast3d_model` represents a 3D model that has been downloaded from
 #' the Tripo API and stored locally.
 #'
 #' @param local_path Character. Path to the local `.glb` file.
@@ -72,8 +72,8 @@ print.tripo_task <- function(x, ...) {
 #' @param metadata list. Model metadata (vertices, faces, format, etc.).
 #'
 #' @export
-#' @name tripo_model
-new_tripo_model <- function(local_path = character(),
+#' @name cast3d_model
+new_cast3d_model <- function(local_path = character(),
                             task_id = character(),
                             metadata = list()) {
   structure(
@@ -82,12 +82,12 @@ new_tripo_model <- function(local_path = character(),
       task_id = task_id,
       metadata = metadata
     ),
-    class = "tripo_model"
+    class = "cast3d_model"
   )
 }
 
 #' @export
-print.tripo_model <- function(x, ...) {
+print.cast3d_model <- function(x, ...) {
   cli::cli_h1("Tripo 3D Model")
   cli::cli_bullets(c(
     "*" = "Path:   {.file {x$local_path}}",

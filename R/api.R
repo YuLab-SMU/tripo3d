@@ -11,7 +11,7 @@
 #'
 #' @return A parsed list from the JSON response.
 #' @keywords internal
-tripo_request <- function(endpoint,
+cast3d_request <- function(endpoint,
                           method = c("POST", "GET"),
                           body = NULL,
                           query = NULL,
@@ -21,11 +21,11 @@ tripo_request <- function(endpoint,
   api_key <- check_api_key()
   url <- build_url(endpoint)
 
-  timeout <- timeout %||% get_tripo_option("timeout", 300)
-  max_retries <- max_retries %||% get_tripo_option("max_retries", 3)
+  timeout <- timeout %||% get_cast3d_option("timeout", 300)
+  max_retries <- max_retries %||% get_cast3d_option("max_retries", 3)
 
   req <- httr2::request(url) |>
-    httr2::req_user_agent("tripo3d (R package)") |>
+    httr2::req_user_agent("cast3d (R package)") |>
     httr2::req_headers(Authorization = paste("Bearer", api_key)) |>
     httr2::req_retry(
       max_tries = max_retries,
@@ -51,14 +51,14 @@ tripo_request <- function(endpoint,
     httr2_failure = function(e) {
       cli::cli_abort(
         "Tripo API request failed: {e$message}",
-        class = "tripo_network_error",
+        class = "cast3d_network_error",
         parent = e
       )
     },
     httr2_timeout = function(e) {
       cli::cli_abort(
         "Tripo API request timed out after {timeout}s",
-        class = "tripo_timeout_error",
+        class = "cast3d_timeout_error",
         parent = e
       )
     }
@@ -69,18 +69,18 @@ tripo_request <- function(endpoint,
     error = function(e) {
       cli::cli_abort(
         "Failed to parse Tripo API response",
-        class = "tripo_parse_error",
+        class = "cast3d_parse_error",
         parent = e
       )
     }
   )
 
-  if (is_tripo_error(resp)) {
+  if (is_cast3d_error(resp)) {
     err_msg <- parsed$message %||% parsed$error %||%
       sprintf("HTTP %d", httr2::resp_status(resp))
     cli::cli_abort(
       err_msg,
-      class = "tripo_api_error",
+      class = "cast3d_api_error",
       status = httr2::resp_status(resp),
       body = parsed
     )

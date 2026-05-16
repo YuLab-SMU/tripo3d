@@ -14,7 +14,7 @@
 #' @param height Image height in pixels. Default 800.
 #' @param dpi Resolution in dots per inch. Default 150.
 #' @param wait If `TRUE` (default), poll until completion and return a
-#'   `tripo_model`. If `FALSE`, return a `tripo_task`.
+#'   `cast3d_model`. If `FALSE`, return a `cast3d_task`.
 #' @param via_llm If `TRUE`, route through `generate_3d_via_llm()` with
 #'   `mode = "data_viz"` instead of direct `image_to_model`. Requires
 #'   aisdk. Default `TRUE` (data visualizations benefit from LLM routing).
@@ -23,7 +23,7 @@
 #' @param ... Additional arguments passed to `generate_3d()` (direct mode)
 #'   or `generate_3d_via_llm()` (LLM mode).
 #'
-#' @return A `tripo_model` if `wait = TRUE`, otherwise a `tripo_task`.
+#' @return A `cast3d_model` if `wait = TRUE`, otherwise a `cast3d_task`.
 #' @export
 #'
 #' @examples
@@ -103,7 +103,7 @@ ggplot_to_3d <- function(p,
 #' @param ... Additional arguments passed to `generate_3d()` (direct mode)
 #'   or `generate_3d_via_llm()` (LLM mode).
 #'
-#' @return A `tripo_model` if `wait = TRUE`, otherwise a `tripo_task`.
+#' @return A `cast3d_model` if `wait = TRUE`, otherwise a `cast3d_task`.
 #' @export
 #'
 #' @examples

@@ -1,5 +1,5 @@
 skip_if_no_api_key <- function() {
-  if (is.na(getOption("tripo3d.api_key"))) {
+  if (is.na(getOption("cast3d.api_key"))) {
     testthat::skip("No Tripo API key configured")
   }
 }

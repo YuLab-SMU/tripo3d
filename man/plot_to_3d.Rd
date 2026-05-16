@@ -35,7 +35,7 @@ plot_to_3d(
 or \code{generate_3d_via_llm()} (LLM mode).}
 }
 \value{
-A \code{tripo_model} if \code{wait = TRUE}, otherwise a \code{tripo_task}.
+A \code{cast3d_model} if \code{wait = TRUE}, otherwise a \code{cast3d_task}.
 }
 \description{
 Evaluates a plot expression, captures its output as a PNG, and

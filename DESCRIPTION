@@ -1,17 +1,17 @@
-Package: tripo3d
-Title: Image to 3D Model via Tripo API
+Package: cast3d
+Title: Image to 3D Model
 Version: 0.1.0
-Authors@R:
-    c(person("Yu", "Gongchao", email = "yugongchao@example.com",
-             role = c("aut", "cre")))
+Authors@R: c( 
+    person(given = "Guangchuang", family = "Yu",       email = "guangchuangyu@gmail.com",      role  = c("aut", "cre"), comment = c(ORCID = "0000-0002-6485-8781"))
+	)
 Description: A lightweight R client for the Tripo 3D generation API.
     Convert images or text prompts into 3D models (GLB format) and
     interactively view them in RStudio, RMarkdown, or Shiny via a
     custom Three.js widget. Built on httr2 for HTTP communication and
     htmlwidgets for 3D rendering.
 License: MIT + file LICENSE
-URL: https://github.com/yulab-github/tripo3d
-BugReports: https://github.com/yulab-github/tripo3d/issues
+URL: https://github.com/yulab-github/cast3d
+BugReports: https://github.com/yulab-github/cast3d/issues
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.3

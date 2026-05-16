@@ -1,48 +1,48 @@
 `%||%` <- function(x, y) if (is.null(x)) y else x
 
-tripo_api_error <- function(message, status = NULL, body = NULL, call = NULL) {
+cast3d_api_error <- function(message, status = NULL, body = NULL, call = NULL) {
   structure(
     list(message = message, status = status, body = body, call = call),
-    class = c("tripo_api_error", "error", "condition")
+    class = c("cast3d_api_error", "error", "condition")
   )
 }
 
-tripo_timeout_error <- function(url, timeout, call = NULL) {
+cast3d_timeout_error <- function(url, timeout, call = NULL) {
   msg <- sprintf("Request to %s timed out after %ss", url, timeout)
   structure(
     list(message = msg, url = url, timeout = timeout, call = call),
-    class = c("tripo_timeout_error", "error", "condition")
+    class = c("cast3d_timeout_error", "error", "condition")
   )
 }
 
-tripo_parse_error <- function(message, body = NULL, call = NULL) {
+cast3d_parse_error <- function(message, body = NULL, call = NULL) {
   structure(
     list(message = message, body = body, call = call),
-    class = c("tripo_parse_error", "error", "condition")
+    class = c("cast3d_parse_error", "error", "condition")
   )
 }
 
 check_api_key <- function() {
-  key <- get_tripo_option("api_key")
+  key <- get_cast3d_option("api_key")
   if (is.na(key)) {
     cli::cli_abort(
       c("No API key configured.",
-        i = "Call {.fun tripo_setup} first or set {.envvar TRIPO_API_KEY}."),
-      class = "tripo_no_auth_error"
+        i = "Call {.fun cast3d_setup} first or set {.envvar TRIPO_API_KEY}."),
+      class = "cast3d_no_auth_error"
     )
   }
   key
 }
 
 build_url <- function(endpoint) {
-  base <- get_tripo_option("base_url")
+  base <- get_cast3d_option("base_url")
   if (endsWith(base, "/") && startsWith(endpoint, "/")) {
     endpoint <- substring(endpoint, 2)
   }
   paste0(base, endpoint)
 }
 
-is_tripo_error <- function(resp) {
+is_cast3d_error <- function(resp) {
   if (!inherits(resp, "httr2_response")) return(FALSE)
   status <- httr2::resp_status(resp)
   status >= 400
@@ -55,7 +55,7 @@ read_image_to_base64 <- function(image) {
   if (!is.character(image) || length(image) != 1 || !nzchar(image)) {
     cli::cli_abort(
       "image must be a single file path, URL, or raw vector",
-      class = "tripo_invalid_input_error"
+      class = "cast3d_invalid_input_error"
     )
   }
   if (grepl("^https?://", image)) {
@@ -72,11 +72,11 @@ read_image_to_base64 <- function(image) {
   }
   cli::cli_abort(
     "image must be a file path, URL, or raw vector",
-    class = "tripo_invalid_input_error"
+    class = "cast3d_invalid_input_error"
   )
 }
 
-tripo_upload_image <- function(image) {
+cast3d_upload_image <- function(image) {
   ext <- "jpg"
   if (is.character(image) && length(image) == 1 && nzchar(image)) {
     if (grepl("^https?://", image)) {
@@ -85,7 +85,7 @@ tripo_upload_image <- function(image) {
     if (!file.exists(image)) {
       cli::cli_abort(
         "image file not found: {.file {image}}",
-        class = "tripo_invalid_input_error"
+        class = "cast3d_invalid_input_error"
       )
     }
     path <- image
@@ -100,7 +100,7 @@ tripo_upload_image <- function(image) {
   } else {
     cli::cli_abort(
       "image must be a file path, URL, or raw vector",
-      class = "tripo_invalid_input_error"
+      class = "cast3d_invalid_input_error"
     )
   }
 
@@ -127,10 +127,10 @@ tripo_upload_image <- function(image) {
   body_raw <- rawConnectionValue(con)
   close(con)
 
-  upload_timeout <- max(get_tripo_option("timeout", 300), 120)
+  upload_timeout <- max(get_cast3d_option("timeout", 300), 120)
 
   req <- httr2::request(url) |>
-    httr2::req_user_agent("tripo3d (R package)") |>
+    httr2::req_user_agent("cast3d (R package)") |>
     httr2::req_headers(
       Authorization = paste("Bearer", api_key),
       `Content-Type` = paste0("multipart/form-data; boundary=", boundary)
@@ -146,7 +146,7 @@ tripo_upload_image <- function(image) {
   if (!identical(parsed$code, 0L)) {
     cli::cli_abort(
       "File upload failed: {.val {parsed$message %||% 'unknown error'}}",
-      class = "tripo_api_error",
+      class = "cast3d_api_error",
       body = parsed
     )
   }
@@ -155,7 +155,7 @@ tripo_upload_image <- function(image) {
   if (is.null(token)) {
     cli::cli_abort(
       "Upload succeeded but no image token returned",
-      class = "tripo_parse_error"
+      class = "cast3d_parse_error"
     )
   }
 
@@ -163,7 +163,7 @@ tripo_upload_image <- function(image) {
 }
 
 apply_proxy <- function() {
-  proxy <- get_tripo_option("proxy")
+  proxy <- get_cast3d_option("proxy")
   if (!is.na(proxy) && nzchar(proxy)) {
     Sys.setenv(https_proxy = proxy, http_proxy = proxy)
   }

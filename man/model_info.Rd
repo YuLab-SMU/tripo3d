@@ -7,7 +7,7 @@
 model_info(model)
 }
 \arguments{
-\item{model}{A \code{tripo_model} object or path to a \code{.glb} file.}
+\item{model}{A \code{cast3d_model} object or path to a \code{.glb} file.}
 }
 \value{
 A list with \code{format}, \code{size_bytes}, and optionally \code{vertices},

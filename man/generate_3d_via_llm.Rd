@@ -31,7 +31,7 @@ generate_3d_via_llm(
 
 \item{face_limit}{Maximum faces. Default 50000.}
 
-\item{wait}{Wait for completion. If \code{FALSE}, returns a \code{tripo_task}.}
+\item{wait}{Wait for completion. If \code{FALSE}, returns a \code{cast3d_task}.}
 
 \item{style}{Optional Tripo style hint for the LLM description.}
 
@@ -40,7 +40,7 @@ generate_3d_via_llm(
 \item{...}{Additional arguments passed to \code{describe_image_for_3d()}.}
 }
 \value{
-A \code{tripo_model} if \code{wait = TRUE}, otherwise a \code{tripo_task}.
+A \code{cast3d_model} if \code{wait = TRUE}, otherwise a \code{cast3d_task}.
 }
 \description{
 Full pipeline: describe the image with a vision LLM (aisdk), then

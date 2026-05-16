@@ -51,11 +51,11 @@ cache.}
 \item{...}{Additional arguments (reserved for future use).}
 }
 \value{
-A \code{tripo_model} object.
+A \code{cast3d_model} object.
 }
 \description{
 Construct precise 3D data sculptures directly from numeric data using
-\pkg{rgl} mesh primitives, export as GLB, and return a \code{tripo_model}
+\pkg{rgl} mesh primitives, export as GLB, and return a \code{cast3d_model}
 compatible with \code{\link{view_3d}()}. No AI generation — every point,
 bar, or surface cell maps exactly to a physical 3D element.
 }

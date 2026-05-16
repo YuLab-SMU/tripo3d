@@ -1,19 +1,19 @@
 #' Download a 3D model from a completed Tripo task
 #'
-#' @param task A `tripo_task` with status `"succeeded"`.
+#' @param task A `cast3d_task` with status `"succeeded"`.
 #' @param output_dir Directory to save the `.glb` file. Default uses the
 #'   package cache directory.
 #' @param overwrite If `TRUE`, overwrite existing files. Default `FALSE`.
 #' @param filename Output filename. Default auto-generated from task ID.
 #'
-#' @return A `tripo_model` object.
+#' @return A `cast3d_model` object.
 #' @export
 download_model <- function(task,
                           output_dir = NULL,
                           overwrite = FALSE,
                           filename = NULL) {
-  if (!inherits(task, "tripo_task")) {
-    cli::cli_abort("task must be a tripo_task object")
+  if (!inherits(task, "cast3d_task")) {
+    cli::cli_abort("task must be a cast3d_task object")
   }
   if (task$status != "succeeded") {
     cli::cli_abort(
@@ -36,7 +36,7 @@ download_model <- function(task,
 
   cli::cli_alert_info("Downloading model...")
   resp <- httr2::request(task$model_url) |>
-    httr2::req_timeout(get_tripo_option("timeout", 300)) |>
+    httr2::req_timeout(get_cast3d_option("timeout", 300)) |>
     httr2::req_perform()
 
   writeBin(httr2::resp_body_raw(resp), local_path)
@@ -49,7 +49,7 @@ download_model <- function(task,
 
   metadata <- list(format = "GLB", size_bytes = size)
 
-  model <- new_tripo_model(
+  model <- new_cast3d_model(
     local_path = local_path,
     task_id = task$task_id,
     metadata = metadata
@@ -66,7 +66,7 @@ read_cached_model <- function(local_path, task_id) {
   if (file.exists(cache_path)) {
     return(readRDS(cache_path))
   }
-  model <- new_tripo_model(
+  model <- new_cast3d_model(
     local_path = local_path,
     task_id = task_id,
     metadata = list(format = "GLB", size_bytes = file.info(local_path)$size)
@@ -81,13 +81,13 @@ model_cache_path <- function(task_id) {
 
 #' Display model metadata
 #'
-#' @param model A `tripo_model` object or path to a `.glb` file.
+#' @param model A `cast3d_model` object or path to a `.glb` file.
 #'
 #' @return A list with `format`, `size_bytes`, and optionally `vertices`,
 #'   `faces` if `rgl2gltf` is installed.
 #' @export
 model_info <- function(model) {
-  if (inherits(model, "tripo_model")) {
+  if (inherits(model, "cast3d_model")) {
     if (requireNamespace("rgl2gltf", quietly = TRUE)) {
       tryCatch({
         mesh <- rgl2gltf::readGLB(model$local_path)
@@ -118,5 +118,5 @@ model_info <- function(model) {
     return(info)
   }
 
-  cli::cli_abort("model must be a tripo_model or a .glb file path")
+  cli::cli_abort("model must be a cast3d_model or a .glb file path")
 }

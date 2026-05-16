@@ -41,7 +41,7 @@ describe_image_for_3d <- function(image, model = NULL, style = NULL,
   }
 
   if (is.null(model)) {
-    model <- getOption("tripo3d.llm_model")
+    model <- getOption("cast3d.llm_model")
     if (is.null(model)) {
       model <- aisdk::get_model()
     }
@@ -154,12 +154,12 @@ build_3d_description_prompts <- function(mode, style = NULL) {
 #' @param model_version Tripo model version.
 #' @param texture Generate texture. Default `TRUE`.
 #' @param face_limit Maximum faces. Default 50000.
-#' @param wait Wait for completion. If `FALSE`, returns a `tripo_task`.
+#' @param wait Wait for completion. If `FALSE`, returns a `cast3d_task`.
 #' @param style Optional Tripo style hint for the LLM description.
 #' @param mode Description mode passed to `describe_image_for_3d()`.
 #' @param ... Additional arguments passed to `describe_image_for_3d()`.
 #'
-#' @return A `tripo_model` if `wait = TRUE`, otherwise a `tripo_task`.
+#' @return A `cast3d_model` if `wait = TRUE`, otherwise a `cast3d_task`.
 #' @export
 #'
 #' @examples

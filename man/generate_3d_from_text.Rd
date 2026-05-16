@@ -31,7 +31,7 @@ generate_3d_from_text(
 \item{...}{Additional arguments passed to \code{poll_task()}.}
 }
 \value{
-A \code{tripo_model} if \code{wait = TRUE}, otherwise a \code{tripo_task}.
+A \code{cast3d_model} if \code{wait = TRUE}, otherwise a \code{cast3d_task}.
 }
 \description{
 Convenience wrapper that calls \code{create_3d_from_text()},

@@ -4,7 +4,7 @@
 #' Works in RStudio Viewer, RMarkdown, Shiny apps, and any HTML-capable
 #' output.
 #'
-#' @param model A `tripo_model` object or path to a `.glb` file.
+#' @param model A `cast3d_model` object or path to a `.glb` file.
 #' @param background Background color in CSS hex format. Default `"#f0f0f0"`.
 #' @param show_grid If `TRUE`, add a reference ground grid to the scene.
 #'   Default `FALSE`.
@@ -30,13 +30,13 @@ view_3d <- function(model,
                     height = NULL,
                     element_id = NULL,
                     ...) {
-  if (inherits(model, "tripo_model")) {
+  if (inherits(model, "cast3d_model")) {
     glb_path <- model$local_path
   } else if (is.character(model) && length(model) == 1 && file.exists(model)) {
     glb_path <- model
   } else {
     cli::cli_abort(
-      "model must be a tripo_model or a .glb file path"
+      "model must be a cast3d_model or a .glb file path"
     )
   }
 
@@ -58,7 +58,7 @@ view_3d <- function(model,
     x = x,
     width = width,
     height = height,
-    package = "tripo3d",
+    package = "cast3d",
     elementId = element_id,
     ...
   )
@@ -81,7 +81,7 @@ view_3d <- function(model,
 #' @export
 glb_viewer_output <- function(output_id, width = "100%", height = "500px") {
   htmlwidgets::shinyWidgetOutput(output_id, "glb_viewer", width, height,
-                                 package = "tripo3d")
+                                 package = "cast3d")
 }
 
 #' @rdname glb_viewer-shiny

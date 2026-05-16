@@ -15,7 +15,7 @@ view_3d(
 )
 }
 \arguments{
-\item{model}{A \code{tripo_model} object or path to a \code{.glb} file.}
+\item{model}{A \code{cast3d_model} object or path to a \code{.glb} file.}
 
 \item{background}{Background color in CSS hex format. Default \code{"#f0f0f0"}.}
 

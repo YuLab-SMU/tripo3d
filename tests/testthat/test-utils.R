@@ -10,29 +10,29 @@ test_that("%||% returns right when left is NULL", {
 })
 
 test_that("build_url concatenates correctly", {
-  op <- options(tripo3d.base_url = "https://api.tripo3d.ai")
+  op <- options(cast3d.base_url = "https://api.tripo3d.ai")
   on.exit(options(op))
   result <- build_url("/v2/openapi/task/abc")
   expect_equal(result, "https://api.tripo3d.ai/v2/openapi/task/abc")
 })
 
 test_that("build_url removes duplicate slashes", {
-  op <- options(tripo3d.base_url = "https://api.tripo3d.ai/")
+  op <- options(cast3d.base_url = "https://api.tripo3d.ai/")
   on.exit(options(op))
   result <- build_url("/v2/openapi/status")
   expect_equal(result, "https://api.tripo3d.ai/v2/openapi/status")
 })
 
 test_that("check_api_key returns key on valid config", {
-  op <- options(tripo3d.api_key = "sk-test-key-12345678")
+  op <- options(cast3d.api_key = "sk-test-key-12345678")
   on.exit(options(op))
   expect_type(check_api_key(), "character")
 })
 
 test_that("check_api_key errors when API key is not set", {
-  op <- options(tripo3d.api_key = NA_character_)
+  op <- options(cast3d.api_key = NA_character_)
   on.exit(options(op))
-  expect_error(check_api_key(), class = "tripo_no_auth_error")
+  expect_error(check_api_key(), class = "cast3d_no_auth_error")
 })
 
 test_that("read_image_to_base64 works with raw input", {
@@ -49,9 +49,9 @@ test_that("read_image_to_base64 errors on missing file", {
   )
 })
 
-test_that("is_tripo_error detects httr2 error responses", {
+test_that("is_cast3d_error detects httr2 error responses", {
   e <- simpleError("nope")
-  expect_false(is_tripo_error(e))
+  expect_false(is_cast3d_error(e))
   rlang_null <- if (requireNamespace("rlang", quietly = TRUE)) rlang::zap() else NULL
-  expect_false(is_tripo_error(rlang_null))
+  expect_false(is_cast3d_error(rlang_null))
 })

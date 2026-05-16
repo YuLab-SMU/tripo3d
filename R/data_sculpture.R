@@ -1,7 +1,7 @@
 #' Build 3D data sculptures from R data
 #'
 #' Construct precise 3D data sculptures directly from numeric data using
-#' \pkg{rgl} mesh primitives, export as GLB, and return a \code{tripo_model}
+#' \pkg{rgl} mesh primitives, export as GLB, and return a \code{cast3d_model}
 #' compatible with \code{\link{view_3d}()}. No AI generation — every point,
 #' bar, or surface cell maps exactly to a physical 3D element.
 #'
@@ -27,7 +27,7 @@
 #' @param filename Output filename. Default auto-generated.
 #' @param ... Additional arguments (reserved for future use).
 #'
-#' @return A \code{tripo_model} object.
+#' @return A \code{cast3d_model} object.
 #' @export
 #'
 #' @examples
@@ -121,7 +121,7 @@ data_sculpture <- function(x,
 
   cli::cli_alert_success("Sculpture saved: {.file {glb_path}}")
 
-  new_tripo_model(
+  new_cast3d_model(
     local_path = glb_path, task_id = "data_sculpture",
     metadata = list(
       format = "GLB", size_bytes = file.info(glb_path)$size,

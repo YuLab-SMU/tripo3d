@@ -13,7 +13,7 @@
 #' @param face_limit Maximum face count. Default 50000.
 #' @param model_seed Random seed for reproducibility. Default `NULL`.
 #'
-#' @return A `tripo_task` object.
+#' @return A `cast3d_task` object.
 #' @export
 #'
 #' @examples
@@ -32,7 +32,7 @@ create_3d_from_image <- function(image,
   model_version <- match.arg(model_version)
 
   cli::cli_alert_info("Uploading image to Tripo...")
-  file <- tripo_upload_image(image)
+  file <- cast3d_upload_image(image)
 
   body <- list(
     type = "image_to_model",
@@ -48,7 +48,7 @@ create_3d_from_image <- function(image,
 
   cli::cli_alert_info("Submitting image to Tripo...")
 
-  resp <- tripo_request(
+  resp <- cast3d_request(
     endpoint = "/v2/openapi/task",
     method = "POST",
     body = body
@@ -57,12 +57,12 @@ create_3d_from_image <- function(image,
   if (!identical(resp$code, 0L)) {
     cli::cli_abort(
       "Tripo task creation failed: {.val {resp$message %||% 'unknown error'}}",
-      class = "tripo_api_error",
+      class = "cast3d_api_error",
       body = resp
     )
   }
 
-  task <- new_tripo_task(
+  task <- new_cast3d_task(
     task_id = resp$data$task_id,
     status = "pending",
     raw = resp
@@ -74,15 +74,15 @@ create_3d_from_image <- function(image,
 
 #' Poll a Tripo task until completion
 #'
-#' @param task A `tripo_task` object.
+#' @param task A `cast3d_task` object.
 #' @param interval Polling interval in seconds. Default 2.
 #' @param max_wait Maximum total wait time in seconds. Default 300.
 #'
-#' @return An updated `tripo_task` with final status.
+#' @return An updated `cast3d_task` with final status.
 #' @export
 poll_task <- function(task, interval = 2, max_wait = 300) {
-  if (!inherits(task, "tripo_task")) {
-    cli::cli_abort("task must be a tripo_task object")
+  if (!inherits(task, "cast3d_task")) {
+    cli::cli_abort("task must be a cast3d_task object")
   }
 
   if (task$status == "succeeded") return(task)
@@ -106,11 +106,11 @@ poll_task <- function(task, interval = 2, max_wait = 300) {
       cli::cli_progress_done()
       cli::cli_abort(
         "Task {.field {task$task_id}} timed out after {max_wait}s",
-        class = "tripo_timeout_error"
+        class = "cast3d_timeout_error"
       )
     }
 
-    resp <- tripo_request(
+    resp <- cast3d_request(
       endpoint = sprintf("/v2/openapi/task/%s", task$task_id),
       method = "GET"
     )
@@ -158,7 +158,7 @@ poll_task <- function(task, interval = 2, max_wait = 300) {
 #' @param wait Wait for completion. If `FALSE`, returns the task immediately.
 #' @param ... Additional arguments passed to `poll_task()`.
 #'
-#' @return A `tripo_model` if `wait = TRUE`, otherwise a `tripo_task`.
+#' @return A `cast3d_model` if `wait = TRUE`, otherwise a `cast3d_task`.
 #' @export
 generate_3d <- function(image,
                         model_version = c("v2.5-20250123", "v2.0-20240919",
@@ -198,7 +198,7 @@ generate_3d <- function(image,
 #' @param face_limit Maximum face count. Default 50000.
 #' @param model_seed Random seed for reproducibility. Default `NULL`.
 #'
-#' @return A `tripo_task` object.
+#' @return A `cast3d_task` object.
 #' @export
 #'
 #' @examples
@@ -234,7 +234,7 @@ create_3d_from_text <- function(prompt,
 
   cli::cli_alert_info("Submitting text prompt to Tripo...")
 
-  resp <- tripo_request(
+  resp <- cast3d_request(
     endpoint = "/v2/openapi/task",
     method = "POST",
     body = body
@@ -243,12 +243,12 @@ create_3d_from_text <- function(prompt,
   if (!identical(resp$code, 0L)) {
     cli::cli_abort(
       "Tripo task creation failed: {.val {resp$message %||% 'unknown error'}}",
-      class = "tripo_api_error",
+      class = "cast3d_api_error",
       body = resp
     )
   }
 
-  task <- new_tripo_task(
+  task <- new_cast3d_task(
     task_id = resp$data$task_id,
     status = "pending",
     raw = resp
@@ -271,7 +271,7 @@ create_3d_from_text <- function(prompt,
 #' @param wait Wait for completion. If `FALSE`, returns the task immediately.
 #' @param ... Additional arguments passed to `poll_task()`.
 #'
-#' @return A `tripo_model` if `wait = TRUE`, otherwise a `tripo_task`.
+#' @return A `cast3d_model` if `wait = TRUE`, otherwise a `cast3d_task`.
 #' @export
 generate_3d_from_text <- function(prompt,
                                    negative_prompt = NULL,

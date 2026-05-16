@@ -1,4 +1,4 @@
-# tripo3d 使用指南：从注册到交互看 3D
+# cast3d 使用指南：从注册到交互看 3D
 
 > 用 R 调 Tripo API，把任意图片变成 3D 模型，在 RStudio 里拖拽旋转查看。
 
@@ -32,10 +32,10 @@ tsk_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
 ---
 
-## 2. 安装 tripo3d
+## 2. 安装 cast3d
 
 ```r
-remotes::install_github("yulab-github/tripo3d")
+remotes::install_github("yulab-github/cast3d")
 ```
 
 依赖会自动安装（httr2、jsonlite、htmlwidgets、cli、fs）。
@@ -56,11 +56,11 @@ TRIPO_API_KEY=tsk_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
 重启 R 后自动读取，不用每次设。
 
-### 方式 B：`tripo_setup()` 显式设置
+### 方式 B：`cast3d_setup()` 显式设置
 
 ```r
-library(tripo3d)
-tripo_setup(api_key = "tsk_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx")
+library(cast3d)
+cast3d_setup(api_key = "tsk_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx")
 ```
 
 当前 R 会话有效。
@@ -76,7 +76,7 @@ Sys.setenv(TRIPO_API_KEY = "tsk_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx")
 如果你的网络需要通过代理访问外网：
 
 ```r
-tripo_setup(
+cast3d_setup(
   api_key = "你的Key",
   proxy = "http://127.0.0.1:7897"
 )
@@ -85,7 +85,7 @@ tripo_setup(
 也可以通过环境变量：
 
 ```
-TRIPO_PROXY=http://127.0.0.1:7897
+CAST3D_PROXY=http://127.0.0.1:7897
 ```
 
 ---
@@ -93,10 +93,10 @@ TRIPO_PROXY=http://127.0.0.1:7897
 ## 4. 一分钟上手
 
 ```r
-library(tripo3d)
+library(cast3d)
 
 # 如果没用环境变量，先设 Key
-tripo_setup(api_key = "你的Key")
+cast3d_setup(api_key = "你的Key")
 
 # 一步到位：上传图片 → 等生成 → 下载 → 查看
 model <- generate_3d("cat.jpg")
@@ -142,23 +142,23 @@ result <- poll_task(task, interval = 3, max_wait = 300)
 #> ✔ Task ef731ad6... complete
 ```
 
-`interval` 是轮询间隔（秒），`max_wait` 是最大等多久。超时会报 `tripo_timeout_error`。
+`interval` 是轮询间隔（秒），`max_wait` 是最大等多久。超时会报 `cast3d_timeout_error`。
 
 ### Step 3：下载模型
 
 ```r
 model <- download_model(result)
-#> ✔ Model saved to C:/Users/xxx/AppData/Local/R/.../tripo3d/ef731ad6.glb (2.3 MB)
+#> ✔ Model saved to C:/Users/xxx/AppData/Local/R/.../cast3d/ef731ad6.glb (2.3 MB)
 
 model
 #> ── Tripo 3D Model ──
-#> • Path:   C:/.../tripo3d/ef731ad6.glb
+#> • Path:   C:/.../cast3d/ef731ad6.glb
 #> • Task:   ef731ad6-aeb0-4950-9a2e-2298359dfaf8
 #> • Format: GLB
 #> • Size: 2.3 MB
 ```
 
-模型会缓存到 `tools::R_user_dir("tripo3d", "data")`，重复下载同一个 task 不会重新拉。
+模型会缓存到 `tools::R_user_dir("cast3d", "data")`，重复下载同一个 task 不会重新拉。
 
 ---
 
@@ -205,7 +205,7 @@ view_3d(model,
 
 ```r
 library(shiny)
-library(tripo3d)
+library(cast3d)
 
 ui <- fluidPage(
   titlePanel("Tripo 3D Viewer"),
@@ -226,14 +226,14 @@ shinyApp(ui, server)
 
 ## 8. R 绘图 → 3D 数据雕塑
 
-tripo3d 的 R 独有特性：把数据直接变成精确的 3D 几何体。
+cast3d 的 R 独有特性：把数据直接变成精确的 3D 几何体。
 
 ### 🥇 数据直接 → 3D 几何（推荐，无 AI）
 
 `data_sculpture()` 从 x, y, z 数据直接构建 3D 几何——圆柱针、方块、或阶梯地形，精确到数据坐标。无需 AI，无需 API key。
 
 ```r
-library(tripo3d)
+library(cast3d)
 data(mtcars)
 
 # 散点数据 → 3D 针状雕塑
@@ -264,9 +264,9 @@ view_3d(m)
 ```r
 library(ggplot2)
 library(aisdk)
-library(tripo3d)
+library(cast3d)
 
-tripo_setup(api_key = "你的Key")
+cast3d_setup(api_key = "你的Key")
 
 p <- ggplot(mtcars, aes(wt, mpg, size = hp, color = factor(cyl))) +
   geom_point(alpha = 0.8) +
@@ -329,9 +329,9 @@ remotes::install_github("yulab-github/aisdk")
 
 ```r
 library(aisdk)
-library(tripo3d)
+library(cast3d)
 
-tripo_setup(api_key = "你的Key")
+cast3d_setup(api_key = "你的Key")
 
 # model 可省略，自动用 aisdk 的默认模型（通常 openai:gpt-4o）
 desc <- describe_image_for_3d("cat.jpg")
@@ -361,8 +361,8 @@ view_3d(result)
 aisdk::set_model("anthropic:claude-sonnet-4-20250514")
 # 之后 describe_image_for_3d("any_image.jpg") 默认用 Claude
 
-# 或者用 tripo3d 自己的选项
-options(tripo3d.llm_model = "openai:gpt-4o-mini")
+# 或者用 cast3d 自己的选项
+options(cast3d.llm_model = "openai:gpt-4o-mini")
 ```
 
 ### 纯文本生成 3D（不用图片）
@@ -379,7 +379,7 @@ view_3d(model)
 ## 10. 高级配置
 
 ```r
-tripo_setup(
+cast3d_setup(
   api_key = "你的Key",
   base_url = "https://api.tripo3d.ai",  # 默认
   timeout = 120,      # 单次请求超时秒数
@@ -412,7 +412,7 @@ Tripo 提供一定的免费额度。具体配额和计费见 [platform.tripo3d.a
 
 ### Q: 报错 "No API key found"？
 
-确认已执行 `tripo_setup()` 或设好了 `TRIPO_API_KEY` 环境变量。可以 `get_tripo_options()` 查看当前配置。
+确认已执行 `cast3d_setup()` 或设好了 `TRIPO_API_KEY` 环境变量。可以 `get_cast3d_options()` 查看当前配置。
 
 ### Q: viewer 不显示？
 
@@ -429,4 +429,4 @@ Tripo 提供一定的免费额度。具体配额和计费见 [platform.tripo3d.a
 | Tripo 开发者平台 | https://platform.tripo3d.ai |
 | API Key 页面 | https://platform.tripo3d.ai/api-keys |
 | API 文档 | https://platform.tripo3d.ai/docs/quick-start |
-| tripo3d GitHub | https://github.com/YuLab-SMU/tripo3d |
+| cast3d GitHub | https://github.com/YuLab-SMU/cast3d |

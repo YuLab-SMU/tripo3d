@@ -19,10 +19,10 @@ test_that("create_3d_from_image works with a file", {
   on.exit(unlink(tmp))
 
   task <- create_3d_from_image(tmp)
-  expect_s3_class(task, "tripo_task")
+  expect_s3_class(task, "cast3d_task")
 })
 
-test_that("generate_3d returns a tripo_model", {
+test_that("generate_3d returns a cast3d_model", {
   skip_if_no_network()
   skip_on_cran()
   skip_on_ci()
@@ -35,6 +35,6 @@ test_that("generate_3d returns a tripo_model", {
   on.exit(unlink(tmp))
 
   model <- generate_3d(tmp, max_wait = 180)
-  expect_s3_class(model, "tripo_model")
+  expect_s3_class(model, "cast3d_model")
   expect_true(file.exists(model$local_path))
 })

@@ -7,14 +7,14 @@
 poll_task(task, interval = 2, max_wait = 300)
 }
 \arguments{
-\item{task}{A \code{tripo_task} object.}
+\item{task}{A \code{cast3d_task} object.}
 
 \item{interval}{Polling interval in seconds. Default 2.}
 
 \item{max_wait}{Maximum total wait time in seconds. Default 300.}
 }
 \value{
-An updated \code{tripo_task} with final status.
+An updated \code{cast3d_task} with final status.
 }
 \description{
 Poll a Tripo task until completion

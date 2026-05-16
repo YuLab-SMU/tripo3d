@@ -10,12 +10,12 @@ HTMLWidgets.widget({
     var animationId = null;
 
     function ensureImportmap() {
-      if (document.querySelector('script[type="importmap"][data-tripo3d]')) {
+      if (document.querySelector('script[type="importmap"][data-cast3d]')) {
         return;
       }
       var script = document.createElement('script');
       script.type = 'importmap';
-      script.setAttribute('data-tripo3d', 'true');
+      script.setAttribute('data-cast3d', 'true');
       script.textContent = JSON.stringify({
         imports: {
           'three': 'https://unpkg.com/three@0.170.0/build/three.module.js',

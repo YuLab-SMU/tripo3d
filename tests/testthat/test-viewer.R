@@ -1,18 +1,18 @@
 test_that("view_3d rejects invalid input", {
   expect_error(
     view_3d(character(0)),
-    "must be a tripo_model or a .glb file path"
+    "must be a cast3d_model or a .glb file path"
   )
   expect_error(
     view_3d("/no/such/model.glb"),
-    "must be a tripo_model or a .glb file path"
+    "must be a cast3d_model or a .glb file path"
   )
 })
 
-test_that("view_3d creates htmlwidget with tripo_model", {
+test_that("view_3d creates htmlwidget with cast3d_model", {
   m <- structure(
     list(local_path = tempfile(fileext = ".glb")),
-    class = "tripo_model"
+    class = "cast3d_model"
   )
   # Write minimal GLB: magic + version + totalLength
   minimal_glb <- function(path) {
@@ -32,7 +32,7 @@ test_that("view_3d creates htmlwidget with tripo_model", {
 test_that("view_3d errors on missing file", {
   m <- structure(
     list(local_path = "/no/such/file.glb"),
-    class = "tripo_model"
+    class = "cast3d_model"
   )
   expect_error(view_3d(m), "not found")
 })

@@ -1,4 +1,4 @@
-# tripo3d 开发计划
+# cast3d 开发计划
 
 > 图片/文本 → Tripo API → GLB 3D 模型 → 浏览器交互展示
 
@@ -19,8 +19,8 @@ Layer 2: Task（任务层）
   generate_3d() → 一步到位快捷函数
 
 Layer 1: API（通信层）
-  tripo_setup() → API key 全局配置
-  tripo_request() → httr2 统一出口（Bearer auth + 重试 + 超时）
+  cast3d_setup() → API key 全局配置
+  cast3d_request() → httr2 统一出口（Bearer auth + 重试 + 超时）
 ```
 
 ## 展示层方案选择
@@ -50,13 +50,13 @@ Layer 1: API（通信层）
 - [x] DESCRIPTION（含 httr2/htmlwidgets 等 Imports）
 - [x] NAMESPACE（roxygen2 自动生成）
 - [x] R/zzz.R（.onAttach/.onLoad）
-- [x] R/config.R（tripo_setup + options 管理）
-- [x] R/s3-classes.R（tripo_task + tripo_model S3 类 + print 方法）
-- [x] R/tripo3d-package.R
+- [x] R/config.R（cast3d_setup + options 管理）
+- [x] R/s3-classes.R（cast3d_task + cast3d_model S3 类 + print 方法）
+- [x] R/cast3d-package.R
 
 ### Phase 2: API 通信层 ✅
-- [x] R/api.R（tripo_request：统一 httr2 出口）
-- [x] R/utils.R（错误类 tripo_api_error/tripo_timeout_error + 路径 helper）
+- [x] R/api.R（cast3d_request：统一 httr2 出口）
+- [x] R/utils.R（错误类 cast3d_api_error/cast3d_timeout_error + 路径 helper）
 - [x] 重试逻辑（req_retry + 指数退避）
 - [x] 超时配置（可配总超时 300s）
 
@@ -79,7 +79,7 @@ Layer 1: API（通信层）
 
 ### Phase 6: 测试 + 文档 + 检查 ✅
 - [x] tests/testthat/（test-utils, test-config, test-task, test-s3-classes, test-viewer）
-- [x] vignettes/tripo3d.Rmd
+- [x] vignettes/cast3d.Rmd
 - [x] README.md
 - [x] R CMD check 测试全部通过
 - [x] LICENSE 文件
